@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI Agents Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Simple function to add a test message
+        function sendTestMessage(message) {
+            // Wait for the page to load
+            setTimeout(function() {
+                console.log("Sending test message:", message);
+                
+                // Add the message to the chat
+                const chatMessages = document.getElementById('chat-messages');
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message user';
+                messageElement.innerHTML = `<p>${message}</p>`;
+                chatMessages.appendChild(messageElement);
+                
+                // Process the message
+                setTimeout(function() {
+                    // Generate a response based on the message
+                    let response = '';
+                    
+                    if (message.toLowerCase().includes('2+2')) {
+                        response = "This seems like a math question. I'll hand off to the Math Tutor.";
+                        
+                        // Add the response to the chat
+                        const responseElement = document.createElement('div');
+                        responseElement.className = 'message agent';
+                        responseElement.innerHTML = `<p>${response}</p>`;
+                        chatMessages.appendChild(responseElement);
+                        
+                        // Switch to Math Tutor after a delay
+                        setTimeout(function() {
+                            // Add system message
+                            const systemElement = document.createElement('div');
+                            systemElement.className = 'message system';
+                            systemElement.innerHTML = `<p>Switched to Math Tutor agent.</p>`;
+                            chatMessages.appendChild(systemElement);
+                            
+                            // Update active button
+                            document.querySelectorAll('.agent-btn').forEach(btn => {
+                                btn.classList.remove('active');
+                                if (btn.getAttribute('data-agent') === 'math-tutor') {
+                                    btn.classList.add('active');
+                                }
+                            });
+                            
+                            // Add Math Tutor response
+                            setTimeout(function() {
+                                const mathResponse = document.createElement('div');
+                                mathResponse.className = 'message agent';
+                                mathResponse.innerHTML = `<p>I'll help you solve this math problem: ${message}<br><br>Let's break it down step by step...<br><br>2 + 2 = 4</p>`;
+                                chatMessages.appendChild(mathResponse);
+                                
+                                // Scroll to bottom
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                            }, 1000);
+                        }, 1500);
+                    } else if (message.toLowerCase().includes('president')) {
+                        response = "This seems like a history question. I'll hand off to the History Tutor.";
+                        
+                        // Add the response to the chat
+                        const responseElement = document.createElement('div');
+                        responseElement.className = 'message agent';
+                        responseElement.innerHTML = `<p>${response}</p>`;
+                        chatMessages.appendChild(responseElement);
+                        
+                        // Switch to History Tutor after a delay
+                        setTimeout(function() {
+                            // Add system message
+                            const systemElement = document.createElement('div');
+                            systemElement.className = 'message system';
+                            systemElement.innerHTML = `<p>Switched to History Tutor agent.</p>`;
+                            chatMessages.appendChild(systemElement);
+                            
+                            // Update active button
+                            document.querySelectorAll('.agent-btn').forEach(btn => {
+                                btn.classList.remove('active');
+                                if (btn.getAttribute('data-agent') === 'history-tutor') {
+                                    btn.classList.add('active');
+                                }
+                            });
+                            
+                            // Add History Tutor response
+                            setTimeout(function() {
+                                const historyResponse = document.createElement('div');
+                                historyResponse.className = 'message agent';
+                                historyResponse.innerHTML = `<p>Here's some historical context about: ${message}<br><br>The first president of the United States was George Washington, who served from 1789 to 1797. He was a key figure in the American Revolutionary War and presided over the Constitutional Convention of 1787.</p>`;
+                                chatMessages.appendChild(historyResponse);
+                                
+                                // Scroll to bottom
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                            }, 1000);
+                        }, 1500);
+                    } else {
+                        response = `I'm here to help with your question about: ${message}`;
+                        
+                        // Add the response to the chat
+                        const responseElement = document.createElement('div');
+                        responseElement.className = 'message agent';
+                        responseElement.innerHTML = `<p>${response}</p>`;
+                        chatMessages.appendChild(responseElement);
+                    }
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }, 500);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>OpenAI Agents Demo</h1>
+            <p>A web demonstration of OpenAI Agents functionality</p>
+        </header>
+
+        <main>
+            <div class="agent-container">
+                <div class="agent-selection">
+                    <h2>Select an Agent</h2>
+                    <div class="agent-options">
+                        <button class="agent-btn active" data-agent="assistant">Assistant</button>
+                        <button class="agent-btn" data-agent="math-tutor">Math Tutor</button>
+                        <button class="agent-btn" data-agent="history-tutor">History Tutor</button>
+                        <button class="agent-btn" data-agent="triage">Triage Agent</button>
+                    </div>
+                </div>
+
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message system">
+                            <p>Welcome to the OpenAI Agents Demo. Select an agent and start chatting!</p>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="user-input" placeholder="Type your message here...">
+                        <button id="send-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tools-container">
+                <h2>Available Tools</h2>
+                <div class="tools-list" id="tools-list">
+                    <!-- Tools will be populated based on the selected agent -->
+                </div>
+                
+                <!-- Test buttons -->
+                <div class="test-buttons">
+                    <h3>Test Functions</h3>
+                    <button onclick="sendTestMessage('What is 2+2?')">Test Math Question</button>
+                    <button onclick="sendTestMessage('Who was the first president of the United States?')">Test History Question</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>This is a demonstration of OpenAI Agents functionality. Learn more at <a href="https://openai.github.io/openai-agents-python/" target="_blank">OpenAI Agents SDK</a>.</p>
+        </footer>
+    </div>
+
+    <script src="dist/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "openai-agents-web-demo",
+  "version": "1.0.0",
+  "description": "A web demonstration of OpenAI Agents functionality",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "http-server -o"
+  },
+  "keywords": [
+    "openai",
+    "agents",
+    "typescript",
+    "demo"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "openai": "^4.0.0"
+  }
+}
